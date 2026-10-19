@@ -1,0 +1,98 @@
+SEX KATEGORIER — UPPDATERAD DASHBOARD
+
+A: Brentford attack — direct
+B: Brentford attack — recovered
+C: Opponent attack — after Brentford control
+D: Opponent attack — direct
+E: Play stopped
+F: Not assessable
+
+A/B: Brentford har registrerad kontroll vid bedömningspunkten eller tar fasens
+första skott. B innebär tidigare registrerad motståndarkontroll; A saknar sådan.
+C/D: motsvarande slutpunkt för motståndaren. C innebär tidigare Brentford-kontroll;
+D saknar sådan. Flera lagbyten tillåts. B är inte längre ett återtag inom fem sekunder.
+E: spelavbrott eller observerat halvleksslut före skott/tidsgräns.
+F: underlaget räcker inte för att avgöra kategorin. F är ingen bollförlust.
+
+TRE SEPARATA KLOCKOR
+1. First-control search window: sökning från tillslaget till första kontrollen.
+2. Category assessment window: normalt 10 s från första registrerade kontrollen.
+   Slutar tidigare vid första skottet, spelavbrott eller observerat halvleksslut.
+   Skott på exakt tidsgräns ingår. Skott prioriteras vid samtidig avbrottsmarkering.
+3. Outcome window: från kontrollen som börjar den avslutande egna/motståndarfasen.
+   Slutar vid skott, lagbyte, spelavbrott eller utfallsgränsen.
+Klockorna ändras separat i sidopanelen. Mätgränsen för långbollar är fortsatt 27,4 m.
+
+STEG 3 OCH 4
+Steg 3 använder A/B. B börjar vid det senaste återtag som inleder den egna slutfasen.
+Steg 4 använder C/D. C börjar vid senaste motståndarkontrollen som inleder slutfasen
+efter Brentford-kontroll. D börjar vid motståndarens första kontroll.
+Försvarsgraferna har kvar separata utfallsfönster på 10 och 15 s.
+Tidigare motståndarspel inom B och tidigare egna anfall inom C ingår inte i dessa
+kategorispecifika diagram. För total risk/utdelning krävs även dessa tidigare faser.
+
+DATA OCH NÄMNARE
+En lucka vid bedömningspunkten kan uppskattas med närmaste kontroll enligt regeln nedan.
+Fall som inte uppfyller regeln blir F.
+Luckor tidigare i förloppet markeras, men är inte automatiska bollförluster.
+Registrerade lagbyten är inte bevis på luftdueller eller varje faktisk bollberöring.
+Skott avslutar kategorifasen före en eventuell retur. Returen ändrar inte kategorin.
+Supportbilden och första mottagarens namn kommer fortfarande från första kontrollen.
+Supportens kontrolljämförelse använder A+B / A–D i det bedömda contesturvalet.
+E/F blir inte misslyckade försök i den nämnaren. Första Brentford-kontrollen är ett
+separat mått och räknas från faktisk första kontroll, inte nya kategori A.
+Motståndarna bedöms med samma regler, relativt laget som slår långbollen.
+Kontroller efter 5/10 s sparas för alla försök där Brentford kontrollerade först,
+även om de nu hamnar i C, E eller F. Dessa är separata från kategorifasen.
+
+VAR DU ÄNDRAR OCH GRANSKAR
+category_model.py: gemensamma definitioner, bokstäver, färger och fasankare.
+presentation_views.py: coachlayout. coach_widgets.py: coachgrafer och filter.
+control_outcomes.py: utfallsklockor. sequence_model.py: sekvenser och xT.
+dashboard_data.py: standardinställningar och sammankoppling av beräkningar.
+Deeper analytics → Timing and eligibility audit: orsak, slutpunkt, tidsgräns,
+fasens startevent, registrerade lagbyten och luckmarkeringar. Kan exporteras som CSV.
+Gamla kategorin och femsekundersfälten har prefix legacy_ och används bara för spårning.
+analysis_base.py är en äldre adapter för laddning, urval, första kontroll och tracking.
+Kör inte dess historiska main() för att få de nya A–F-resultaten.
+Tidigare femkategoridokument ligger i docs/legacy/ och beskriver föregående version.
+
+TOLKNING OCH NÄSTA KONTROLL
+Tio sekunder är ett analysval, inte en bevisat optimal fotbollsgräns.
+Skott kan avsluta klassificeringen. Skottandelar inom A/B eller C/D beskriver därför
+selekterade förlopp och bevisar inte att en kategori orsakar fler skott.
+Jämförelsen från tillslaget för alla långbollar finns kvar separat i Deeper analytics
+under Historical release/start benchmark. Extern xT och pitch control är oförändrade.
+Behåll 10 s som redovisningspunkt men granska även förloppen och kontrollera om
+huvudfyndet står kvar vid exempelvis 8/10/12 s. Redovisa ändrade kategorier och
+bedömningsbart antal vid varje gräns. Välj inte gränsen för att få önskat resultat.
+
+INGEN MATCHDATA MEDFÖLJER. Era nya antal måste räknas på era originalfiler.
+
+NÄRHETSREGEL — NY I DENNA VERSION
+Om ingen registrerad kontroll täcker kategorigränsen används de två närmaste
+kontrollintervallen på varsin sida om gränsen. Avstånd mäts från föregående
+kontrolls SLUT och nästa kontrolls START, inte från bådas starttid.
+BÅDA avstånden måste vara högst Nearest-control tolerance (s). Standard 1 s.
+Den närmaste kontrollen bestämmer det uppskattade slutlaget. Vid lika avstånd
+mellan olika lag blir det F; vid samma lag väljs föregående kontroll.
+Båda sidor måste finnas och vara giltiga. Inga länkar över skott, spelavbrott,
+halvleksgräns, okända lag eller felaktiga tidsintervall.
+
+När nästa kontroll ligger efter kategorigränsen används den bara för att uppskatta
+kategorin. Dess verkliga starttid används som fasankare om den inleder ett nytt
+lags kontroll. Den flyttas aldrig bakåt till gränsen. Registrerade lagbyten före
+gränsen räknar inte detta framtida lagbyte som redan inträffat.
+
+Uppskattade fall får category_estimated=True och separata granskningsfält med
+metod, närliggande event, avstånd, vald kontrolltid och eventuell framtida kontroll.
+category_without_estimate visar klassificeringen utan närhetsregeln (F för dessa).
+Coachvyn visar antal uppskattningar och markerar valda uppskattade situationer.
+Deeper analytics → Timing and eligibility audit visar kategoriantal med/utan
+uppskattningarna och exporterar alla granskningsfält.
+
+För strikt analys: sätt Nearest-control tolerance (s) till 0 och tryck Load / apply
+settings. Toleransen är separat från kategori- och utfallsfönster. En sekund är
+ett prövningsvärde, inte en validerad optimal gräns. Granska verkliga fall och
+jämför slutsatser med och utan uppskattningar. Ingen förbättrad täckningsandel
+på era verkliga matcher kan anges innan ni har kört appen med era data.

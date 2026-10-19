@@ -1,0 +1,39 @@
+COACH VIEW REFINEMENT
+
+498/500 on First ball is map coverage: intended receiver positions at release
+with valid x/y inside the normalised 105 x 68 m pitch. It is not passer coverage,
+tracking coverage or outcome assessment coverage. Missing or out-of-bounds
+locations are not plotted; the category denominator remains all selected passes.
+
+Support: choose Intended receiver (original) or Ball at first control (new).
+Both use the same exact first-control frame and configured support radius.
+The ball view counts all tracked players inside the circle, including the
+controller only if actually inside. It never automatically adds the intended
+receiver and never substitutes a controller position for a missing ball.
+Extrapolated ball locations are explicitly reported. Missing/ambiguous ball,
+missing player coordinates or unknown team labels exclude that snapshot.
+Tracking omissions can still undercount players; assessed does not mean perfect.
+
+Available cases preserves the original target/controller relevance rule in the
+receiver view. Ball view admits assessed A-D cases without that relevance rule.
+Use Same cases for both centres to hold the sample fixed: original assessed
+contest cases with an assessable ball snapshot. Centre changes then reflect
+geometry rather than different cohorts. Sample sizes are shown explicitly.
+The switch affects Support only: counts, shots, circle, map, match comparisons
+and exported support evidence. Categories and attack/defence clocks are unchanged.
+
+Main coach headings are selection-aware numerical findings. Other chart headings
+are declarative labels; none imply causality or statistical significance.
+Defensive chart labels say shots/entries conceded to clarify lower is better.
+The opponent reference is risk after their own long balls, not extra opponents
+shooting against Brentford. Layout and four stages are preserved.
+
+Run as before: streamlit run app.py
+Keep all Python modules together; no new package dependency was added.
+New support calculations: support_centres.py
+New circle rendering: pitch_views.py
+Support controls and main findings: presentation_views.py
+Data preparation/cache invalidation: dashboard_data.py
+
+Validation uses synthetic exact-frame tracking and possession sequences, not
+recomputed season findings. Review your real-data sample sizes after loading.

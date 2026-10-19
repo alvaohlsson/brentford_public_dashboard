@@ -1,0 +1,21 @@
+BRENTFORD DASHBOARD - REFINED v4
+
+Use this complete extracted folder instead of the previous one.
+Keep your existing match data where they are. No Python-file merging is needed.
+
+In Anaconda Prompt, enter the folder containing app.py, then run:
+  python -m streamlit run app.py
+
+If a required package is missing:
+  python -m pip install -r requirements.txt
+
+Set the data folder in the sidebar. Load / apply settings is now at the top.
+Nearest-control tolerance defaults to 2 seconds; check and apply your settings.
+
+Stages 3/4 compare Brentford with opponents until any player-role filter is set.
+They then compare matching Brentford situations (red) with the remaining
+Brentford situations under the same other filters (blue).
+
+Read PLAYER_COMPARISON_v4_EN.md for definitions, file changes and verification.
+Older refinement notes and saved parameter results describe previous versions.
+No raw match inputs or hosted deployment are included.

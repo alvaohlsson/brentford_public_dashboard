@@ -1,0 +1,15 @@
+REFINED v4 VERIFICATION
+
+18 pytest tests passed, including Streamlit AppTest and end-to-end synthetic
+CSV/JSON/Parquet fixtures. Existing top-level regression assertions imported
+by pytest also completed successfully. Syntax compilation passed.
+
+New coverage: disjoint player-role cohorts, union within fields/intersection
+across fields, shared non-player filters, unknown identities, manual pass lists,
+empty/full groups, same denominators for overview and match plots, fixed-15s
+entry graph, switching back to opponent references, coach-only navigation,
+removed support-centre cohort selector, 2s default and top-button form edits.
+
+Actual season results and browser screenshot appearance have not been verified.
+Historical parameter_check_results files are retained unchanged and are not
+results from the new default tolerance. See PLAYER_COMPARISON_v4_EN.md.
